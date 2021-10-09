@@ -25,17 +25,17 @@ rtn_sp.columns = [idx]
 
 # Get data for ticker and format into digestible dataframe
 eqt = get_data(tckr, start_date = first_date, end_date = last_date)
-rtn_eqt = ul['adjclose'].pct_change().dropna()
+rtn_eqt = eqt['adjclose'].pct_change().dropna()
 rtn_eqt = pd.DataFrame(rtn_eqt)
 rtn_eqt = rtn_eqt.loc[first_date:,:]
 rtn_eqt.columns = [tckr]
 
 # Calculate static betas
 for i in sb_wdw_dy:
-    print(i, "\t", np.cov(rtn_ul.values[0:-i], rtn_sp.values[0:-i], rowvar = 0)[0,1] / np.var(rtn_sp.values[0:-i]))
+    print(i, "\t", np.cov(rtn_eqt.values[0:-i], rtn_sp.values[0:-i], rowvar = 0)[0,1] / np.var(rtn_sp.values[0:-i]))
 
 # Rolling 30 period betas
-full_df = pd.merge(rtn_ul,rtn_sp, left_index=True, right_index=True)
+full_df = pd.merge(rtn_eqt,rtn_sp, left_index=True, right_index=True)
 
 for i in db_wdw_dy:
 
